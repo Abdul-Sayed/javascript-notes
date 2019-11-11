@@ -5,7 +5,12 @@ const url = "https://jsonplaceholder.typicode.com/todos/1";
 
 fetch(url)
 
-  .then(response => response.json())
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Failed to fetch.')
+    }
+    return response.json()
+  })
 
   .then(data => {
 
@@ -16,6 +21,7 @@ fetch(url)
   .catch(err => {
     console.error(err.message)
   });
+
 
 /////////////////////////////////////////////////////////////////
 
