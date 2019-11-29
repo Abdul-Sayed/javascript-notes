@@ -30,6 +30,15 @@ Creates an iterable into an array
 
 ----
 
+## Array.indexOf()  
+
+const beasts = ['ant', 'bison', 'camel', 'duck', 'bison'];
+
+console.log(beasts.indexOf('bison'));
+// expected output: 1
+
+----
+
 ## for-in loop
 Loops through keys of an object (or indices of an array)
 var text = "";
