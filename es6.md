@@ -28,10 +28,10 @@ If the code block is multiple lines, wrap code in { }, and use return statement
 
 ## Let , Const Keywords
 
-Var is function scoped, otherwise global. 
-Both function declarations and function expressions initialized with var become part of the global namespace, unlike variables declared with let/const. 
+Var is scoped globally, or at least scoped over the entire function its used in. 
+Both function declarations and function expressions initialized with var become part of the global namespace, unlike variables declared with let/const. With var, the scope is not limited to the block in which its defined. 
 
-Let, Const are block scoped (any block like for loop, etc). 
+Let, Const are block scoped (any block like for loop, etc) - and not in the surrounding function or global context outside that block. 
 
 Declaring variables with let confines those variable definitions to the code block where they're written. Outside that code block, the variables are undefined. Declaring variables with let allows them to be reassigned but not redeclared. Use let for counter variables in iterators. 
 
@@ -46,6 +46,10 @@ Declaring primitive variables with const prevents them from being reassigned. co
 		let name = 'Ryan';
 	}
 	console.log(name);  // logs undefined
+
+In a global context, var attaches variables to the window object, unlike let
+    var color = 'red';  //=> window.color == 'red
+    let age = 30;  //=> window.age == undefined
 
 ----
 

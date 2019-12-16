@@ -433,8 +433,18 @@ In a function expression, the function name is stored in a variable which is use
 Or
 		let myFunction = (a,b) => a*b; 
 
+Named function expressions 
+
+    var fibo = function fibonacci() {
+        // inside you can use "fibonacci()" here as this funciton expression has a name.
+    };
+
+    // Outside here, fibonacci() fails, but fibo() works.
+
 
 > Immediately Invoked Functions
+IIFEs are useful to protect overwriting global variables as everything in the IIFE block is scoped locally. 
+Good for encapsulation
 
 	var somethingElse = (function(nm) {
 		return {
@@ -446,8 +456,8 @@ Or
 		};
 	})("Bob");
 
-somethingelse is an IIF which returns an object
-IIF are invoked upon declaration
+somethingelse is an IIFE which returns an object
+IIFs are invoked upon declaration
 () already written in declaration, so no need to re-invoke somethingElse()
 	console.log(somethingElse);
 	console.log(somethingElse.name);
@@ -696,3 +706,16 @@ setInterval() is killed with clearInterval()
 When 'this' is used in an object, it refers to the object its in.
 When 'this' is used in an object's method, it refers to the parent of that method; the object.
 When this is used in a standalone function it refers to the parent of that function, which will be the global window object. 
+
+----
+
+## Closures
+Javascript closures allow variables in the outer scope to be accessables inside a block (not the case in other languages)
+
+  const myName = 'Kyle'
+
+  function printName() {
+    console.log(myName)
+  }
+
+  printName()
