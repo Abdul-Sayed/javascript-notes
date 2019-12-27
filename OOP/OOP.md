@@ -1,5 +1,5 @@
 ## Class Syntax
-class names are capitalized. The constructor function is the instance initializer; tt creates instance objects. No functions should be written in the constructor. Methods within the class are instance methods, unless designated otherwise. 
+class names are capitalized. The constructor function is the instance initializer; it creates instance objects. No functions should be written in the constructor. Methods within the class are instance methods, unless designated otherwise. 
 	class Square {
 		constructor(sideLength) {
 			this.sideLength = sideLength;
@@ -171,6 +171,24 @@ Also, we can Keep track of all instances with .all
 
 	## Inheritance 
 
+    class Rectangle {
+      constructor(length, width) {
+        this.length = length;
+        this.width = width;
+      }
+
+      get area() {
+        return this.length * this.width
+      }
+    }
+
+    class Square extends Rectangle {
+      constructor(side) {
+        super(side, side);
+      }
+    }
+
+---
 		class Person {
 			Constructor(name,age) {
 				this.name = name;
@@ -187,8 +205,7 @@ Also, we can Keep track of all instances with .all
 Inherit one class into another class with extends
 		class Programmer extends Person {
 			Constructor(name,age,language) {
-				// Inherit the properties assigned in the parent with super
-				super(name,age);
+				super(name,age);     // Inherit the properties assigned in the parent with super
 				this.language = language;
 			}
 			displayLanguage() {
@@ -234,7 +251,7 @@ Inherit one class into another class with extends
 
 For each class, create a seperate js file (in src folder).
 Leave index.js to be strictly a run file.
-Then, in index.js, write script tags (with defer attribute) above index.js script tag (which should be last)
+Then, in index.html, write script tags (with defer attribute) above index.js script tag (which should be last)
 
 
 

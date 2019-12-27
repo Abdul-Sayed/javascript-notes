@@ -719,3 +719,38 @@ Javascript closures allow variables in the outer scope to be accessables inside 
   }
 
   printName()
+
+
+  --------
+
+  ## error handling
+  try {
+    // tryCode - Block of code to try
+    s = s.split("").reverse().join('');
+  }
+  catch (err) {
+    // catchCode - Block of code to handle errors
+    console.log(err)
+  }
+  finally {
+    //  finallyCode - Block of code to be executed regardless of the try / catch result
+    return s
+  }
+
+  ### create custom erros with throw 
+
+  function isPositive(a) {
+  try {
+    if (a > 0) {
+      return "YES"
+    }
+    else if (a === 0) {
+      throw "Zero Error"
+    } else {
+      throw "Negative Error"
+    }
+  }
+  catch (err) {
+    return `the error is: ${err}`
+  }
+}
