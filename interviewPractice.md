@@ -1,6 +1,8 @@
 
 ## this keyword
+`this` is a reference holder that will refer to different values based on scope and how its called
 
+When this is used in the global scope, it refers to the window object (unless in strict mode)
 When 'this' is used in an object, it refers to the object its in.
 When 'this' is used in an object's method, it refers to the parent of that method; the object.
 When this is used in a standalone function it refers to the parent of that function, which will be the global window object. 
@@ -14,7 +16,7 @@ This used in a global function (event if nested) will refer to the window object
         console.log(`cleaning ${this.table}`)    //=> 'cleaning window table'
     }
 
-When using this in functions, its best to make them arrow functions. That way the outer scope will be sought to define the context of this. 
+When using this in functions, its best to make them arrow functions. That way the outer scope will be sought to define the context of this. Arrow functions have no binding to this. 
 
 In an object, this refers to the object
     let johnsRoom = {    //=> window.johnsRoom == undefined because johnsRoom is private
@@ -23,6 +25,40 @@ In an object, this refers to the object
         console.log(`cleaning ${this.table}`)   //=> johnsRoom.cleanTable() === 'cleaning johns table'
       }
     }
+
+In a class, this refers to the class  
+
+    class createNewRoom {
+        constructor(name) {
+            this.table = `${name}s table`
+        }
+        cleanTable(soap) {
+            console.log(`cleaning ${this.table} using ${soap}`)
+        }
+    }
+
+## Binding This
+
+Often times a reference to a function is passed around as a variable. This loses its binding when referencing a method in which `this` is used. Arrow functions also don't keep track of this. 
+
+We can explicitly assign the value of this by passing a bound reference where this will be used.
+
+call - someFunction.call(obj, arg1, arg2)
+
+    var UI = {
+      render: function (id = 0, section = 'body') {
+        console.log(this.id, id, section)
+      }
+    }
+
+    var post = {
+      id: 1
+    }
+
+    UI.render.call(post, 2, 'footer')
+
+apply - 
+bind - 
 
 ## var vs let
 
