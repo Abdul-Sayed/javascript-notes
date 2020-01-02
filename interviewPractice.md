@@ -1,3 +1,56 @@
+## var vs let
+
+What will this alert ?
+    function createButtons() {
+      for (var i = 1; i <= 5; i++) {
+        var body = document.querySelector("BODY");
+        var button = document.createElement("BUTTON");
+        button.textContent = 'Button ' + i;
+        button.onclick = function() {
+              alert('This is button ' + i);
+        }
+        body.appendChild(button);
+      }
+    }
+
+    createButtons();
+
+With var, the scope is not limited to the block in which the variable is used - whereas let and const are. Changing `var i` to `let i` makes i different for each time the loop block runs, so the current i will be preserved. 
+
+Another way is to invoke a function, passing in the current i of the loop;
+
+    const addButton = i => {
+      var body = document.querySelector("BODY");
+      var button = document.createElement("BUTTON");
+      button.textContent = "Button " + i;
+      button.onclick = function() {
+        alert("This is button " + i);
+      };
+      body.appendChild(button);
+    };
+
+    function createButtons() {
+      for (let i = 1; i <= 5; i++) {
+        addButton(i);
+      }
+    }
+
+This could also be done as an IIFE, avoiding the need for an external function call;
+
+    (function createButtons() {
+      for (var i = 1; i <= 5; i++) {
+        var body = document.querySelector("BODY");
+        var button = document.createElement("BUTTON");
+        button.textContent = "Button " + i;
+        (function(i) {
+          button.onclick = function() {
+            alert("This is button " + i);
+          };
+        })(i)
+        body.appendChild(button);
+      }
+    })();
+
 
 ## this keyword
 `this` is a reference holder that will refer to different values based on scope and how its called
@@ -117,61 +170,66 @@ Bind:
     let fred = bob.bind(bill, 5, 'ciao')   // prepared to be called later
     console.log(fred('K'))
 
+## Async Question
 
-## var vs let
+let num = 0;
+async function increment() {
+  num += await 2;  // Promise.resolve(2)
+  console.log(num)
+}
 
-What will this alert ?
-    function createButtons() {
-      for (var i = 1; i <= 5; i++) {
-        var body = document.querySelector("BODY");
-        var button = document.createElement("BUTTON");
-        button.textContent = 'Button ' + i;
-        button.onclick = function() {
-              alert('This is button ' + i);
-        }
-        body.appendChild(button);
-      }
-    }
+increment();
 
-    createButtons();
+num += 1
+console.log(num)
 
-With var, the scope is not limited to the block in which the variable is used - whereas let and const are. Changing `var i` to `let i` makes i different for each time the loop block runs, so the current i will be preserved. 
+// what is the resulting output ?     1 2
 
-Another way is to invoke a function, passing in the current i of the loop;
-
-    const addButton = i => {
-      var body = document.querySelector("BODY");
-      var button = document.createElement("BUTTON");
-      button.textContent = "Button " + i;
-      button.onclick = function() {
-        alert("This is button " + i);
-      };
-      body.appendChild(button);
-    };
-
-    function createButtons() {
-      for (let i = 1; i <= 5; i++) {
-        addButton(i);
-      }
-    }
-
-This could also be done as an IIFE, avoiding the need for an external function call;
-
-    (function createButtons() {
-      for (var i = 1; i <= 5; i++) {
-        var body = document.querySelector("BODY");
-        var button = document.createElement("BUTTON");
-        button.textContent = "Button " + i;
-        (function(i) {
-          button.onclick = function() {
-            alert("This is button " + i);
-          };
-        })(i)
-        body.appendChild(button);
-      }
-    })();
+// While being asynchronous, when invoked, increment() is initialized with num = 0. It is set aside until the rest of the main stack is run. So num = 0 + 1; logging 1. Upon returning to increment(), JS continues with the value of num initialized at the time it was called; num = 0 + 2; logging 2.
 
 
+## SetTimeout Functions
+
+console.log('a');
+
+let timmy = setTimeout(function () {
+  console.log('b')
+}, 1);
+
+let tommy = setTimeout(function () {
+  console.log('c')
+}, 10);
+
+let timer = setTimeout(function () {
+  console.log('d')
+}, 0);
+
+console.log('e')
+
+// what is the print order and why ?
+// setTimeout is always taken off the main stack to be revisited after handling the main synchronous loop. However many ms the main loop took to complete will be the time all the async que stack functions will have been waiting. Whichever setTimeout had a delay less than the elapsed ms will fire first in the order written. 
+// a , e, b, d, 
+
+## Making a method private 
+
+// Revealing module pattern; pattern to only expose certain object methods to the outside. _convention signifies a private variables
+
+let myModule = (function () {
+  let _data = [];
+  let _render = () => {
+    // click listeners for _add and _remove
+    return 'I rendered'
+  };
+  let _add = () => {
+    // _data.push('new data')
+  };
+  let _remove = () => {
+    // _data.pop
+  }
+  return { render: _render }
+})();
+
+console.log(myModule.render())
 
 ## Immediately Invoked Functions
 IIFEs are functions that are executed upon creation. 
@@ -180,7 +238,7 @@ IIFEs are functions that are executed upon creation.
       console.log(num * 2)
     })(5)
 
-## Closures
+## Closures and function vs block scope
 Closures are nested functions with access to data from outer scope(s). Javascript has lexical scoping which allows variables defined in outer scopes to be available in nested scopes (unlike Ruby). 
 
     const f = () => {
@@ -191,6 +249,51 @@ Closures are nested functions with access to data from outer scope(s). Javascrip
     }
 
     f()()   //=> logs 2
+
+The nested function within the setTimeout is a closure and the following iterator logs 3, 3, 3 each after a second.
+This is because var is function scoped, and maintains its value across the entire f2 function. i increments to 3 before the first setTimeout executes, so all the setTimeout will be using i = 3
+
+    (function f2() {
+      for (var i = 0; i < 3; i++) {
+        setTimeout(() => {
+          console.log(i)
+        }, 1000);
+      }
+    })
+
+Simply replace var with let to make i block scoped, so that i only keeps its value over the for loop. Therefore setTimeout will only recieve the current i of the loop
+
+    (function f2() {
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+          console.log(i)
+        }, 1000);
+      }
+    })
+
+Another option is to invoke an external function within the for loop, passing it the current i each iternation
+
+    const loggit = (i) => {
+      setTimeout(() => {
+        console.log(i)
+      }, 1000);
+    }
+
+    (function f2() {
+      for (var i = 0; i < 3; i++) {
+        loggit(i)
+      }
+    })()
+
+Yet another option is to encapsulate the nested function of setTimeout and bind the context of the for loop to it, passing in i. 
+
+    (function f3() {
+      for (var i = 0; i < 3; i++) {
+        setTimeout(((x) => {
+          console.log(x)
+        }).bind(this, i), 1000);
+      }
+    })()
 
 ## Currying 
 Currying is a process in functional programming of transforming a function with multiple arguments into a sequence of nested functions that each take one of those multiple arguments.
