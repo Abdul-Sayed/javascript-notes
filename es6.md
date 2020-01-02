@@ -28,10 +28,9 @@ If the code block is multiple lines, wrap code in { }, and use return statement
 
 ## Let , Const Keywords
 
-Var is scoped globally, or at least scoped over the entire function its used in. 
-Both function declarations and function expressions initialized with var become part of the global namespace, unlike variables declared with let/const. With var, the scope is not limited to the block in which its defined. 
+Var is scoped globally. Both function declarations and function expressions initialized with var become part of the global namespace, unlike variables declared with let/const. With var, the scope is not limited to the block in which its defined. 
 
-Let, Const are block scoped (any block like for loop, etc) - and not in the surrounding function or global context outside that block. With each pass of the block, a new variable is made with let.  
+Let, Const are block scoped (any block like for loop, etc) - and not in the surrounding function or global context outside that block. With each pass of the block, a new variable is made with let.   
 
 Declaring variables with let confines those variable definitions to the code block where they're written. Outside that code block, the variables are undefined. Declaring variables with let allows them to be reassigned but not redeclared. Use let for counter variables in iterators. 
 
@@ -52,6 +51,8 @@ In a global context, var attaches variables to the window object, unlike let
     let age = 30;  //=> window.age == undefined
 
 ----
+
+
 
 ## Object Literals
 

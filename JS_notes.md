@@ -461,15 +461,18 @@ IIFs are invoked upon declaration
 () already written in declaration, so no need to re-invoke somethingElse()
 	console.log(somethingElse);
 	console.log(somethingElse.name);
-	console.log(somethingElse.x())
+	console.log(somethingElse.x())  
 ----
 
 ## Scoping
-Variables defined in a block are not accessible in higher scopes. But variables defined in ancestor scopes are defined in descendant scopes. 
+
+Global scope; variables defined in the global context. In this scope var attaches to the window object, unlike let and const 
+Function Scope; variables (var, let, const) defined here are restricted to the function and cannot be accessed outside. 
+Block Scope; In normal blocks let and const are confined to the block's scope while var bleeds to the outside
 
 ### Lexical Scoping 
 
-Functions that use variables not defined in their blocks look for those variable definitions in successive scopes above the scope where the function is defined (not where the function is invoked);
+Variables defined in a block are not accessible in higher scopes. But variables defined in ancestor scopes are defined in descendant scopes. Functions that use variables not defined in their blocks look for those variable definitions in successive scopes above the scope where the function is defined (not where the function is invoked);
 
 	const myVar = 'Foo';
 

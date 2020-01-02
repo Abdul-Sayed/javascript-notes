@@ -37,11 +37,11 @@ In a class, this refers to the class
         }
     }
 
-## Binding This
+## Call/Apply/Bind This
 
 Often times a reference to a function is passed around as a variable. This loses its binding when referencing a method in which `this` is used. Arrow functions also don't keep track of this. 
 
-We can explicitly assign the value of this by passing a bound reference where this will be used.
+We can explicitly pass the object to reference 'this' to when invoking a function.
 
 call - someFunction.call(obj, arg1, arg2)
 
@@ -55,10 +55,68 @@ call - someFunction.call(obj, arg1, arg2)
       id: 1
     }
 
-    UI.render.call(post, 2, 'footer')
+    UI.render.call(post, 2, 'footer')   //=> this will refer to post in UI.render
 
-apply - 
-bind - 
+apply - someFunction.call(obj, [arg1, arg2])
+
+    UI.render.apply(post, [2, 'footer'])
+
+bind - someFunction.bind(obj)   // unlike with call and apply, in bind, someFunction is not called right away. Its put into a variable to be called later
+
+    let r = UI.render.bind(post)
+    r()
+
+More examples;
+
+Call:
+    let add = function (c) {
+      console.log(this.a + this.b + c)
+    }
+
+    let obj = {
+      a: 1,
+      b: 2
+    }
+
+    add.call(obj, 3)   //=> 6
+
+Apply: - same as call, but pass in arguments as an array
+
+    let bob = function (num, str) {
+      console.log('bob', num, str, this);
+      return true;
+    }
+
+    let bill = {
+      name: 'Bill Murray',
+      movie: 'Lost in Translation',
+      myMethod: function (fn, ...rest) {
+        console.log(rest)
+        // fn.call(bill, rest[0], rest[1])
+        fn.apply(bill, rest)
+      }
+    }
+
+    // console.log(bob(1, 'hello'))
+    // console.log(bob.call(bill, 1, 'hey there'))
+    // console.log(bob.apply(bill, [2, 'yo there']))
+    // console.log(bill.myMethod(bob, 3, 'hi'))
+
+Bind: 
+
+    let bob = function (num, str, x) {
+      console.log('bob', num, str, this, x);
+      return true;
+    }
+
+    let bill = {
+      name: 'Bill Murray',
+      movie: 'Lost in Translation',
+    }
+
+    let fred = bob.bind(bill, 5, 'ciao')   // prepared to be called later
+    console.log(fred('K'))
+
 
 ## var vs let
 
