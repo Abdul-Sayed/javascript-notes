@@ -319,11 +319,32 @@ const multiply30 = multiply20(30); //=> 6000
 
 while this can be done with a for loop;
 
-let arr = []
-for (let i = 0; i < 5; i++) {
-arr.push(Math.round((Math.random()) \* 10))
-}
+    let arr = []
+    for (let i = 0; i < 5; i++) {
+    arr.push(Math.round((Math.random()) \* 10))
+    }
 
 It can also be done by creating a new array of length 5, filling it with placeholder values, then mapping over them to turn them into random numbers
 
-let myArray = new Array(5).fill(10).map(n => Math.round(n \* Math.random()))
+    let myArray = new Array(5).fill(10).map(n => Math.round(n \* Math.random()))
+
+## Implement a JS singleton pattern
+
+    let obj = (() => {
+    let objInstance;
+
+    function create() {
+    let _isRunning = false;
+    let start = () => _isRunning = true;
+    let stop = () => _isRunning = false;
+    let currentState = () => _isRunning;
+
+        return { start, stop, currentState }
+
+    }
+    return {
+    getInstance: () => {
+    return objInstance ? objInstance : objInstance = create()
+    }
+    }
+    })();
