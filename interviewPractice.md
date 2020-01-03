@@ -384,12 +384,12 @@ Determine if the number of passed arguments (arguments.length) is the same as th
 
 ## Revealing Module Pattern 
 
-// Revealing module pattern; pattern to only expose certain object methods to the outside. _convention signifies a private variable
+// Revealing module pattern; pattern to only expose certain object methods (_render) to the outside while keeping the others, such as _data, _add, and _remove hidden. (_convention signifies a private variable)
 
     let myModule = (function () {
       let _data = [];
       let _render = () => {
-        // click listeners for _add and _remove
+        // click listeners to execute internal _add and _remove methods
         return 'I rendered'
       };
       let _add = () => {
