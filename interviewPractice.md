@@ -51,6 +51,34 @@ This could also be done as an IIFE, avoiding the need for an external function c
       }
     })();
 
+## var vs let hoisting 
+
+    // var/let hoisting
+    // What will be the output? 
+
+    (function f() {
+      console.log('using var', area);
+      console.log('using let', name);
+      var area = 'Geology';
+      let name = 'Bert';
+    })()
+
+    // using var undefined and Reference Error
+    // During compilation, Javascript performs variable declarations, then re runs to perform all variable assignments, reads, and function invocation. In the first phase, the variables are hoisted to the top of their scope and given tentative default values. With var, variables are assigned undefined in the initial run. With let, variables are not assigned anything (typeof wil equal the string 'undefined'). Therefore attempting to consume name throws a reference error. Its best practice to write all variable declaration and assignments at the top of their scope. Otherwise implement error handling as follows: 
+
+    (function f() {
+      if (area !== undefined) console.log('using var', area);
+      try {
+        console.log('using let', name);
+      } catch (error) {
+        console.log(error.name);
+        console.log(error.message);
+      }
+      var area = 'Geology';
+      let name = 'Bert';
+    })()
+
+
 ## this keyword
 
 `this` is a reference holder that will refer to different values based on scope and how its called
