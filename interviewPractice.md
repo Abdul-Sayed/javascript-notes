@@ -172,20 +172,21 @@ Bind:
 
 ## Async Question
 
-let num = 0;
-async function increment() {
-num += await 2; // Promise.resolve(2)
-console.log(num)
-}
+// what is the resulting output ?
 
-increment();
+    let num = 0;
 
-num += 1
-console.log(num)
+    async function increment() {
+    num += await 2; // same as Promise.resolve(2)
+    console.log(num)
+    }
 
-// what is the resulting output ? 1 2
+    increment();
 
-// While being asynchronous, when invoked, increment() is initialized with num = 0. It is set aside until the rest of the main stack is run. So num = 0 + 1; logging 1. Upon returning to increment(), JS continues with the value of num initialized at the time it was called; num = 0 + 2; logging 2.
+    num += 1
+    console.log(num)
+
+// First the synchronous code is run, so num = 1 when the syncronous console.log runs. While being asynchronous, when invoked, increment() is initialized with num = 0. It is set aside until the rest of the main stack is run. So num = 0 + 1; logging 1. Upon returning to increment(), JS continues with the value of num initialized at the time it was called; num = 0 + 2; logging 2.
 
 ## SetTimeout Functions
 
