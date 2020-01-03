@@ -17,7 +17,7 @@ class names are capitalized. The constructor function is the instance initialize
 	square.area(); // => 25
 	square.areaMessage(); // => LOG: The area of this square is 25
 
-## <Named) Import and Export 
+## (Named) Import and Export 
 
 In src/animal.js, 
 	export class Feline {
@@ -36,12 +36,16 @@ In src/animal.js,
 	export class Cat extends Feline {
 		constructor(type, legs, lives) {
 			super(type, legs);
-			this.tail = tail;
+			this.lives = lives;
 		}
 
 		makeNoise(sound = 'meow') {
 			return sound
 		}
+
+    numLives(lives = 9) {
+      return lives
+    }
 	}
 
 In src/index.js, 
