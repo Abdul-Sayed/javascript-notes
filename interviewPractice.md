@@ -330,6 +330,8 @@ It can also be done by creating a new array of length 5, filling it with placeho
 
 ## Implement a JS singleton pattern
 
+This is a pattern to initialize an instance if it doesn't exist and if it exists, return the same instance (without re-initialization)
+
     let obj = (() => {
     let objInstance;
 
@@ -348,3 +350,56 @@ It can also be done by creating a new array of length 5, filling it with placeho
     }
     }
     })();
+
+
+## Automatic semicolon injection   
+
+Given this code, how will it run ?
+
+    let a = {
+      a: 123
+    }
+
+    [a].forEach(x => console.log(x))
+
+Because of the missing semicolon on the object a, JS reads this as doing an object property lookup. Javascript interprets this as 
+  
+    let a;  // undefined; looking up {a:123} by key undefined:
+    a = {a:123}[a].forEach(x => console.log(x))
+
+
+## Determine if a function recieved the expected number of parameters
+Determine if the number of passed arguments (arguments.length) is the same as the number of parameters (f.length)
+
+    let f = function (a, b) {
+      return arguments.length === f.length ? 'matching number of parameters' : 'wrong number of parameters'
+    }
+
+
+    console.log(f())
+    console.log(f(1))
+    console.log(f(1, 2))
+    console.log(f(1, 2, 3))
+
+
+## Revealing Module Pattern 
+
+// Revealing module pattern; pattern to only expose certain object methods to the outside. _convention signifies a private variable
+
+    let myModule = (function () {
+      let _data = [];
+      let _render = () => {
+        // click listeners for _add and _remove
+        return 'I rendered'
+      };
+      let _add = () => {
+        // _data.push('new data')
+      };
+      let _remove = () => {
+        // _data.pop
+      }
+      return { render: _render }
+    })();
+
+
+    console.log(myModule.render())
