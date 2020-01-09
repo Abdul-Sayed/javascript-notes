@@ -206,7 +206,7 @@ sort an array of objects by alphabet
 
 	Array.sort((obj1, obj2) => obj1.name.localeCompare(obj2.name))
 
-sort an array ob ofjects numerically (ascending)
+sort an array of objects numerically (ascending)
 
 	Array.sort((obj1, obj2) => obj1[field] - obj2[field])
 
