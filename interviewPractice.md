@@ -235,8 +235,8 @@ Bind:
     console.log('e')
 
     // what is the print order and why ?
-    // setTimeout is always taken off the main stack to be revisited after handling the main synchronous loop. However many ms the main loop took to complete will be the time all the async que stack functions will have been waiting. Whichever setTimeout had a delay less than the elapsed ms will fire first in the order written.
-    // a , e, b, d,
+    // setTimeout is always taken off the main stack to be revisited after handling the main synchronous loop. However many ms the main loop took to complete will be the time all the async que stack functions will have been waiting. All setTimeouts that had a delay less than the elapsed ms will fire first in the order written.
+    // a , e, b, d, c
 
 ## Making a method private
 
@@ -271,14 +271,14 @@ IIFEs are functions that are executed upon creation.
 
 Closures are nested functions with access to data from outer scope(s). Javascript has lexical scoping which allows variables defined in outer scopes to be available in nested scopes (unlike Ruby).
 
-    const f = () => {
+    const f1 = () => {
       let i = 1;
       return () => {
         console.log(i * 2)
       }
     }
 
-    f()()   //=> logs 2
+    f1()()   //=> logs 2
 
 The nested function within the setTimeout is a closure and the following iterator logs 3, 3, 3 each after a second.
 This is because var is function scoped, and maintains its value across the entire f2 function. i increments to 3 before the first setTimeout executes, so all the setTimeout will be using i = 3
