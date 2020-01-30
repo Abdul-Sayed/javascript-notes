@@ -120,7 +120,7 @@ Attribute writer methods
   lol.writer = 'wut';
   console.log(lol.writer);  // wut
 
-## Class MEthods 
+## Class Methods 
 These are used in classes containing helper methods, where no instance of it is needed
 	class CommonMath {
 		static triple(number) {
@@ -170,7 +170,7 @@ Also, we can Keep track of all instances with .all
 	
 	Student.all = []
 	let student = new Student('Carr@ol-Ann', ')Freel*ing');
-	student; // => Student { _firstName: 'Carrol-A
+	student; // => Student { _firstName: 'Carrol-Ann', _lastName: 'Freeling' }
 
 
 	## Inheritance 
