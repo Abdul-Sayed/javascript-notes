@@ -1,3 +1,22 @@
+## Classes as Functions
+
+class User {
+  constructor(name) { this.name = name; }
+  sayHi() { alert(this.name); }
+}
+
+// class is a function
+alert(typeof User); // function
+
+// ...or, more precisely, the constructor is a method on the User Function Prototype 
+alert(User === User.prototype.constructor); // true
+
+// The methods are in User.prototype e.g:
+alert(User.prototype.sayHi); // alert(this.name);
+
+// there are exactly two methods in the prototype
+alert(Object.getOwnPropertyNames(User.prototype)); // constructor, sayHi
+
 ## Class Syntax
 class names are capitalized. The constructor function is the instance initializer; it creates instance objects. No functions should be written in the constructor. Methods within the class are instance methods, unless designated otherwise. 
 	class Square {
@@ -191,6 +210,36 @@ Also, we can Keep track of all instances with .all
         super(side, side);
       }
     }
+
+---
+
+    class Animal {
+      constructor(name) {
+        this.speed = 0;
+        this.name = name;
+      }
+      run(speed) {
+        this.speed += speed;
+        alert(`${this.name} runs with speed ${this.speed}.`);
+      }
+      stop() {
+        this.speed = 0;
+        alert(`${this.name} stands still.`);
+      }
+    }
+
+    let animal = new Animal("My animal");   // creates an instance of Animal with property name = "My animal"
+
+    class Rabbit extends Animal {   // creates a new class that builds functionality on top of Animal
+      hide() {
+        alert(`${this.name} hides!`);
+      }
+    }
+
+    let rabbit = new Rabbit("White Rabbit");   // creates an instance of Rabbit with property name = "White Rabbit"
+
+    rabbit.run(5); // White Rabbit runs with speed 5.
+    rabbit.hide(); // White Rabbit hides!
 
 ---
 		class Person {
