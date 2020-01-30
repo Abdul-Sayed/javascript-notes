@@ -17,6 +17,22 @@ alert(User.prototype.sayHi); // alert(this.name);
 // there are exactly two methods in the prototype
 alert(Object.getOwnPropertyNames(User.prototype)); // constructor, sayHi
 
+## Dynamically making classes 
+
+function makeClass(phrase) {
+  // declare a class and return it
+  return class {
+    sayHi() {
+      alert(phrase);
+    };
+  };
+}
+
+// Create a new class
+let User = makeClass("Hello");
+
+new User().sayHi(); // Hello
+
 ## Class Syntax
 class names are capitalized. The constructor function is the instance initializer; it creates instance objects. No functions should be written in the constructor. Methods within the class are instance methods, unless designated otherwise. 
 	class Square {
