@@ -258,6 +258,7 @@ Also, we can Keep track of all instances with .all
     rabbit.hide(); // White Rabbit hides!
 
 ---
+Inherit one class into another class with extends
 		class Person {
 			Constructor(name,age) {
 				this.name = name;
@@ -271,7 +272,6 @@ Also, we can Keep track of all instances with .all
 			}
 		}
 
-Inherit one class into another class with extends
 		class Programmer extends Person {
 			Constructor(name,age,language) {
 				super(name,age);     // Inherit the properties assigned in the parent with super
