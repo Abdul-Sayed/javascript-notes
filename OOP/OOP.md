@@ -95,24 +95,9 @@ In src/index.js,
 
 
 
-## Getter MEthods
+## Getter MEthods, Setter MEthods
 Use for methods that only serve to retrieve data. Get methods read like properties (attribute readers), rather than like functions
-	class Square {
-		constructor(sideLength) {
-			this.sideLength = sideLength;
-		}
-	
-		get area() {
-			return this.sideLength * this.sideLength;
-		}
-	}
-
-	let square = new Square(5);
-	square.sideLength; // => 5
-	square.area; // => 25     The area method reads like a property
-
-## Setter MEthods
-Attribute writer methods 
+Set methods are attribute writer methods 
 	class Square {
 		constructor(sideLength) {
 			this.sideLength = sideLength;
@@ -131,7 +116,7 @@ Attribute writer methods
 	let square = new Square(5);
 	square.sideLength; // => 5
 	square.area; // => 25
-	square.area = 64;
+	square.area = 64;   // Write operations invoke the set method 
 	square.sideLength; // => 8
 	square.area; // => 64
 
@@ -156,8 +141,14 @@ Attribute writer methods
   console.log(lol.writer);  // wut
 
 ## Class Methods 
-These are used in classes containing helper methods, where no instance of it is needed
+These are used in classes containing helper methods, without needing to instantiate an instance
 	class CommonMath {
+    static PI = 3.14;
+
+    static Circumference(diameter) {
+      return diameter * this.PI;
+    }
+
 		static triple(number) {
 			return number * number * number;
 		}
