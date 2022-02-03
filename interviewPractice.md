@@ -1,19 +1,19 @@
-# Scope, hoisting, var vs let/const, this 
+# Scope, hoisting, var vs let/const, this
 
 ## var vs let
 
 What will this alert ?
-    function createButtons() {
-      for (var i = 1; i <= 5; i++) {
-        var body = document.querySelector("BODY");
-        var button = document.createElement("BUTTON");
-        button.textContent = 'Button ' + i;
-        button.onclick = function() {
-         alert('This is button ' + i);
-        }
-        body.appendChild(button);
-      }
-    }
+function createButtons() {
+for (var i = 1; i <= 5; i++) {
+var body = document.querySelector("BODY");
+var button = document.createElement("BUTTON");
+button.textContent = 'Button ' + i;
+button.onclick = function() {
+alert('This is button ' + i);
+}
+body.appendChild(button);
+}
+}
 
     createButtons();
 
@@ -53,10 +53,10 @@ This could also be done as an IIFE, avoiding the need for an external function c
       }
     })();
 
-## var vs let hoisting 
+## var vs let hoisting
 
     // var/let hoisting
-    // What will be the output? 
+    // What will be the output?
 
     (function f() {
       console.log('using var', area);
@@ -66,7 +66,7 @@ This could also be done as an IIFE, avoiding the need for an external function c
     })()
 
     // using var undefined and Reference Error
-    // During compilation, Javascript performs variable declarations, then re runs to perform all variable assignments, reads, and function invocation. In the first phase, the variables are hoisted to the top of their scope and given tentative default values. With var, variables are assigned undefined in the initial run. With let, variables are not assigned anything (typeof wil equal the string 'undefined'). Therefore attempting to consume name throws a reference error. Its best practice to write all variable declaration and assignments at the top of their scope. Otherwise implement error handling as follows: 
+    // During compilation, Javascript performs variable declarations, then re runs to perform all variable assignments, reads, and function invocation. In the first phase, the variables are hoisted to the top of their scope and given tentative default values. With var, variables are assigned undefined in the initial run. With let, variables are not assigned anything (typeof wil equal the string 'undefined'). Therefore attempting to consume name throws a reference error. Its best practice to write all variable declaration and assignments at the top of their scope. Otherwise implement error handling as follows:
 
     (function f() {
       if (area !== undefined) console.log('using var', area);
@@ -79,7 +79,6 @@ This could also be done as an IIFE, avoiding the need for an external function c
       var area = 'Geology';
       let name = 'Bert';
     })()
-
 
 ## this keyword
 
@@ -200,8 +199,8 @@ Bind:
     let fred = bob.bind(bill, 5, 'ciao')   // prepared to be called later
     console.log(fred('K'))
 
-
 // -----------------------------------------------------------------------
+
 # Closures
 
 ## Immediately Invoked Functions
@@ -221,7 +220,7 @@ Curried functions are invoked repeatedly because each level of nesting returns a
       return num1 * num2 * num3
     }
 
-// can be transformed into: 
+// can be transformed into:
 
     function tripleProduct(num1) {
       return num2 => {
@@ -234,9 +233,9 @@ Curried functions are invoked repeatedly because each level of nesting returns a
     tripleProduct(10)(20)(30)  //=> 6000
 
 // OR
-    const multiply10 = tripleProduct(10);
-    const multiply20 = multiply10(20);
-    const multiply30 = multiply20(30); //=> 6000
+const multiply10 = tripleProduct(10);
+const multiply20 = multiply10(20);
+const multiply30 = multiply20(30); //=> 6000
 
 ## Closures and function vs block scope
 
@@ -288,8 +287,8 @@ Yet another option is to encapsulate the nested function of setTimeout and bind 
       }
     })()
 
-
 // -------------------------------------------------------------------------------
+
 # Asynchronous JS
 
 ## Async Question
@@ -338,7 +337,7 @@ Yet another option is to encapsulate the nested function of setTimeout and bind 
 
 ## Making a method private
 
-// Revealing module pattern; pattern to only expose certain object methods to the outside. _convention signifies a private variables
+// Revealing module pattern; pattern to only expose certain object methods to the outside. \_convention signifies a private variables
 
     let myModule = (function () {
     let _data = [];
@@ -361,7 +360,7 @@ Yet another option is to encapsulate the nested function of setTimeout and bind 
 
 # Misc.
 
-## Automatic semicolon injection   
+## Automatic semicolon injection
 
 Given this code, how will it run ?
 
@@ -371,13 +370,13 @@ Given this code, how will it run ?
 
     [a].forEach(x => console.log(x))
 
-Because of the missing semicolon on the object a, JS reads this as doing an object property lookup. Javascript interprets this as 
-  
+Because of the missing semicolon on the object a, JS reads this as doing an object property lookup. Javascript interprets this as
+
     let a;  // undefined; looking up {a:123} by key undefined:
     a = {a:123}[a].forEach(x => console.log(x))
 
-
 ## Determine if a function recieved the expected number of parameters
+
 Determine if the number of passed arguments (arguments.length) is the same as the number of parameters (f.length)
 
     let f = function (a, b) {
@@ -403,8 +402,29 @@ It can also be done by creating a new array of length 5, filling it with placeho
 
     let myArray = new Array(5).fill(10).map(n => Math.round(n \* Math.random()))
 
+// -------------------------------------------------------------------------------
 
-// -------------------------------------------------------------------------------  
+# JS Runtime
+
+## Execution Context
+
+There is a global and a function execution context
+
+As the JS engine runs code, it creates an execution context with two phases: a creation phase and an execution phase.  
+During the creation phase, JS stores global variables as undefined, sets up the memory heap, and establishes the global object, binding this to it.
+In a function execution context, the arguments object would be established rather than the global object.
+
+In the execution phase, the JS engine executes code line by line synchronously, assigns variables their values, and executes function calls
+
+JS engine uses a call stack to manage the execution context. Each time an execution contect is entered, JS pushes it to the top of the call stack.  
+When an execution context completes, it pops off the call stack. The call stack works according to LIFOl Last In First Out.  
+The script will stop when the call stack is empty.
+
+The call stack has a size limit and so recursive functions with no exit conditions will keep adding more function execution contexts until the stack overflows.
+
+Async functions are handled concurrently using the event loop. When an execution context reached an async function, the Web API, another component of the web browser takes it off the stack and waits for it to complete. Meanwhile, the rest of the synchronous functions in the call stack are executed. When the async task is complete, the Web API pushes it to the callback que, and from there the event loop will push it back on the stack if the stack is empty.
+
+// -------------------------------------------------------------------------------
 
 # JS Patterns
 
@@ -431,9 +451,9 @@ This is a pattern to initialize an instance if it doesn't exist and if it exists
     }
     })();
 
-## Revealing Module Pattern 
+## Revealing Module Pattern
 
-// Revealing module pattern; pattern to only expose certain object methods (_render) to the outside while keeping the others, such as _data, _add, and _remove hidden. (_convention signifies a private variable)
+// Revealing module pattern; pattern to only expose certain object methods (\_render) to the outside while keeping the others, such as \_data, \_add, and \_remove hidden. (\_convention signifies a private variable)
 
     let myModule = (function () {
       let _data = [];
