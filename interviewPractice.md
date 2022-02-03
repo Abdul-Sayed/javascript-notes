@@ -3,17 +3,20 @@
 ## var vs let
 
 What will this alert ?
-function createButtons() {
-for (var i = 1; i <= 5; i++) {
-var body = document.querySelector("BODY");
-var button = document.createElement("BUTTON");
-button.textContent = 'Button ' + i;
-button.onclick = function() {
-alert('This is button ' + i);
-}
-body.appendChild(button);
-}
-}
+
+    function createButtons() {
+
+      for (var i = 1; i <= 5; i++) {
+        var body = document.querySelector("BODY");
+        var button = document.createElement("BUTTON");
+        button.textContent = 'Button ' + i;
+        body.appendChild(button);
+
+        button.onclick = function() {
+          alert('This is button ' + i);
+        }
+      }
+    }
 
     createButtons();
 
@@ -21,21 +24,23 @@ With var, the scope is not limited to the block in which the variable is used - 
 
 Another way is to invoke a function, passing in the current i of the loop;
 
-    const addButton = i => {
+    const renderButton = i => {
       var body = document.querySelector("BODY");
       var button = document.createElement("BUTTON");
       button.textContent = "Button " + i;
+      body.appendChild(button);
       button.onclick = function() {
         alert("This is button " + i);
       };
-      body.appendChild(button);
     };
 
     function createButtons() {
-      for (let i = 1; i <= 5; i++) {
-        addButton(i);
+      for (var i = 1; i <= 5; i++) {
+        renderButton(i);
       }
     }
+
+    createButtons();
 
 This could also be done as an IIFE, avoiding the need for an external function call;
 
@@ -44,12 +49,13 @@ This could also be done as an IIFE, avoiding the need for an external function c
         var body = document.querySelector("BODY");
         var button = document.createElement("BUTTON");
         button.textContent = "Button " + i;
+        body.appendChild(button);
+
         (function(i) {
           button.onclick = function() {
             alert("This is button " + i);
           };
         })(i)
-        body.appendChild(button);
       }
     })();
 
