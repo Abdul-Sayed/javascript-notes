@@ -411,18 +411,77 @@ It can also be done by creating a new array of length 5, filling it with placeho
 There is a global and a function execution context
 
 As the JS engine runs code, it creates an execution context with two phases: a creation phase and an execution phase.  
-During the creation phase, JS stores global variables as undefined, sets up the memory heap, and establishes the global object, binding this to it.
+ During the creation phase, JS stores global variables as undefined, sets up the memory heap, and establishes the global object, binding this to it.
 In a function execution context, the arguments object would be established rather than the global object.
 
 In the execution phase, the JS engine executes code line by line synchronously, assigns variables their values, and executes function calls
 
 JS engine uses a call stack to manage the execution context. Each time an execution contect is entered, JS pushes it to the top of the call stack.  
-When an execution context completes, it pops off the call stack. The call stack works according to LIFOl Last In First Out.  
-The script will stop when the call stack is empty.
+ When an execution context completes, it pops off the call stack. The call stack works according to LIFOl Last In First Out.  
+ The script will stop when the call stack is empty.
 
 The call stack has a size limit and so recursive functions with no exit conditions will keep adding more function execution contexts until the stack overflows.
 
+## Event Loop
+
 Async functions are handled concurrently using the event loop. When an execution context reached an async function, the Web API, another component of the web browser takes it off the stack and waits for it to complete. Meanwhile, the rest of the synchronous functions in the call stack are executed. When the async task is complete, the Web API pushes it to the callback que, and from there the event loop will push it back on the stack if the stack is empty.
+
+## Scope, Lexical Scope, Closure
+
+Variables that you declare outside of functions are in the global scope.
+The variables that you declare inside a function are local to the function. They are called local variables.
+Unless using strict mode; `use strict` in a file or within a function, variables assigned in a function scope without using var, let, or const become global variables - bad practice.
+
+If inside a function scope a variable is used that isn't declared there, JS engine will look keep looking one level up until it finds the variable declaration. Javascript has lexical scoping - where inner function can access the variables declared in its outer scope.
+
+A closure is a pattern that can take advantage of this to give outer scope access to variables from an inner scope.
+
+    function greeting() {
+        let message = 'Hi';
+
+        function sayHi() {
+            console.log(message);
+        }
+
+        return sayHi;
+    }
+    let hi = greeting();
+    hi(); // still can access the message variable value; 'Hi'
+
+In greeting(), the reference to sayHi(), an inner function, is being returned. So sayHi is being used as a closure. The variable hi recieves the returned reference and when invoked, it behaves as if sayHi() is being invoked, with the outer context of the sayHi() closure being preserved. Therefore access to the message variable is preserved.
+
+## Hoisting
+
+During the creation phase of the execution context, JS engine stores var variables for that context as undefined (declares them, but doesn't assign them). Also, the variables are moved to the top of the script. Therefore, the first line of below code doesn't cause an error.
+
+    console.log(counter); // undefined
+    var counter = 1;
+
+If the variable is declared with let, JS will not assign it undefined and running this code will throw an error that 'counter' cannot be used before initialization
+
+For functions, using add(x, y) before its declared is not an issue since functions are hoised to the top of the script
+
+    let x = 20,
+    y = 10;
+
+    let result = add(x, y);
+    console.log(result);
+
+    function add(a, b) {
+      return a + b;
+    }
+
+However, for function expressions or arrow functions, it is an issue since as a variable, only var add is hoisted to the top and initialized as undefined. The function is not hoisted to the top. Therefore invoking add to assign it to result will throw an error since undefined cannot be used as a function
+
+    let x = 20,
+    y = 10;
+
+    let result = add(x,y);
+    console.log(result);
+
+    var add = function(x, y) {
+    return x + y;
+    }
 
 // -------------------------------------------------------------------------------
 
