@@ -86,6 +86,10 @@ This could also be done as an IIFE, avoiding the need for an external function c
       let name = 'Bert';
     })()
 
+## arrow functions
+
+Arrow functions should not be used for methods in objects, classes, and constructor functions since using `this` in those arrow functions will refer to the global object rather than the object containing the arrow function. Same for event handlers.
+
 ## this keyword
 
 `this` is a reference holder that will refer to different values based on scope and how its called
@@ -95,6 +99,8 @@ When 'this' is used in an object, it refers to the object its in.
 When 'this' is used in an object's method, it refers to the parent of that method; the object.
 When this is used in a standalone function it refers to the parent of that function, which will be the global window object.
 
+In general, `this` references the object which the function is part of.
+
 In global scope, `this` refers to the window object;
 this.table = "window table" //=> table became a public attribute of the window object
 window.table //=> "window table"
@@ -103,8 +109,6 @@ This used in a global function (event if nested) will refer to the window object
 const cleanTable = function() {
 console.log(`cleaning ${this.table}`) //=> 'cleaning window table'
 }
-
-When using this in functions, its best to make them arrow functions. That way the outer scope will be sought to define the context of this. Arrow functions have no binding to this.
 
 In an object, this refers to the object
 let johnsRoom = { //=> window.johnsRoom == undefined because johnsRoom is private
@@ -131,31 +135,6 @@ Often times a reference to a function is passed around as a variable. This loses
 
 We can explicitly pass the object to reference 'this' to when invoking a function.
 
-call - someFunction.call(obj, arg1, arg2)
-
-    var UI = {
-      render: function (id = 0, section = 'body') {
-        console.log(this.id, id, section)
-      }
-    }
-
-    var post = {
-      id: 1
-    }
-
-    UI.render.call(post, 2, 'footer')   //=> this will refer to post in UI.render
-
-apply - someFunction.call(obj, [arg1, arg2])
-
-    UI.render.apply(post, [2, 'footer'])
-
-bind - someFunction.bind(obj) // unlike with call and apply, in bind, someFunction is not called right away. Its put into a variable to be called later
-
-    let r = UI.render.bind(post)
-    r()
-
-More examples;
-
 Call:
 let add = function (c) {
 console.log(this.a + this.b + c)
@@ -170,44 +149,56 @@ console.log(this.a + this.b + c)
 
 Apply: - same as call, but pass in arguments as an array
 
-    let bob = function (num, str) {
-      console.log('bob', num, str, this);
-      return true;
+    function getBrand(prefix) {
+        console.log(prefix + this.brand);
     }
 
-    let bill = {
-      name: 'Bill Murray',
-      movie: 'Lost in Translation',
-      myMethod: function (fn, ...rest) {
-        console.log(rest)
-        // fn.call(bill, rest[0], rest[1])
-        fn.apply(bill, rest)
-      }
-    }
+    let honda = {
+        brand: 'Honda'
+    };
+    let audi = {
+        brand: 'Audi'
+    };
 
-    // console.log(bob(1, 'hello'))
-    // console.log(bob.call(bill, 1, 'hey there'))
-    // console.log(bob.apply(bill, [2, 'yo there']))
-    // console.log(bill.myMethod(bob, 3, 'hi'))
+    getBrand.apply(honda, ["It's a "]); // "It's a Honda"
+    getBrand.apply(audi, ["It's an "]); // "It's a Audi"
 
 Bind:
 
-    let bob = function (num, str, x) {
-      console.log('bob', num, str, this, x);
-      return true;
+    let car = {
+        brand: 'Honda',
+        getBrand: function () {
+            return this.brand;
+        }
     }
 
-    let bill = {
-      name: 'Bill Murray',
-      movie: 'Lost in Translation',
-    }
+    console.log(car.getBrand()); // Honda
 
-    let fred = bob.bind(bill, 5, 'ciao')   // prepared to be called later
-    console.log(fred('K'))
+    let brand = car.getBrand;
+    console.log(brand()); // undefined
+
+    let brand = car.getBrand.bind(car);  // pass the object you want this to reference in the argument of bind
+    console.log(brand()); // Honda
 
 // -----------------------------------------------------------------------
 
 # Closures
+
+A closure is a pattern that can give outer scope access to variables from an inner scope.
+
+    function greeting() {
+        let message = 'Hi';
+
+        function sayHi() {
+            console.log(message);
+        }
+
+        return sayHi;
+    }
+    let hi = greeting();
+    hi(); // still can access the message variable value; 'Hi'
+
+In greeting(), the reference to sayHi(), an inner function, is being returned. So sayHi is being used as a closure. The variable hi recieves the returned reference and when invoked, it behaves as if sayHi() is being invoked, with the outer context of the sayHi() closure being preserved. Therefore access to the message variable is preserved.
 
 ## Immediately Invoked Functions
 
@@ -245,7 +236,7 @@ const multiply30 = multiply20(30); //=> 6000
 
 ## Closures and function vs block scope
 
-Closures are nested functions with access to data from outer scope(s). Javascript has lexical scoping which allows variables defined in outer scopes to be available in nested scopes (unlike Ruby).
+Javascript has lexical scoping which allows variables defined in outer scopes to be available in nested scopes (unlike Ruby). Closures allow an outer scope access to data nested within a function's scope.
 
     const f1 = () => {
       let i = 1;
