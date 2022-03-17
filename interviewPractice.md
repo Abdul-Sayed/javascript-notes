@@ -421,7 +421,7 @@ The call stack has a size limit and so recursive functions with no exit conditio
 
 ## Event Loop
 
-Async functions are handled concurrently using the event loop. When an execution context reached an async function, the Web API, another component of the web browser takes it off the stack and waits for it to complete. Meanwhile, the rest of the synchronous functions in the call stack are executed. When the async task is complete, the Web API pushes it to the callback que, and from there the event loop will push it back on the stack if the stack is empty.
+Async functions are handled concurrently using the event loop. When an execution context reaches an async function, the Web API; another component of the web browser takes it off the stack and waits for it to complete. Meanwhile, the rest of the synchronous functions in the call stack are executed. When the async task is complete, the Web API pushes it to the callback que, and from there the event loop will push it back on the stack if the stack is empty.
 
 ## Scope, Lexical Scope, Closure
 
