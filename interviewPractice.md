@@ -528,3 +528,23 @@ This is a pattern to initialize an instance if it doesn't exist and if it exists
 
 
     console.log(myModule.render())
+    
+    
+## Prototype
+
+Feature of JS objects that allow them to inherit from one another
+
+    const vehicle = {
+        drive: function() {
+            console.log('The car is driving.')
+        }
+    }
+    
+    const car = {
+        make: 'Honda'
+    }
+    
+    Object.setPrototypeOf(car, vehicle);  // car inherits from vehicle
+    car.drive()  // will work
+    
+    
