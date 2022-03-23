@@ -123,6 +123,8 @@ Promise.race()
 
 
 
+// async await vs promises vs callbacks
+
 /*************
 Async Await
 *************/
@@ -201,6 +203,140 @@ Promise.race([
   })
   
   
+
+
+interface Stock {
+  fruits: string[];
+    liquid: string[];
+    holder: string[];
+    toppings: string[];
+}
+  
+ let stocks: Stock = {
+  fruits: ["strawberry", "grapes", "bananas", "apple"],
+  liquid: ["water", "ice"],
+holder: ["cone", "cup", "stick"],
+  toppings: ["chocolate", "peanuts"],
+}
+
+let isShopOpen = Math.floor(Math.random()*8);   // closed 1 day of the week
+
+
+/*
+* Using Async Await Syntax
+*/
+
+let time = (timeout: number) => {
+    return new Promise((resolve, reject) => {
+        if (isShopOpen) {
+            setTimeout(resolve, timeout);
+        } else {
+            reject('shop is closed')
+        }
+    })
+}
+
+async function kitchen() {
+    try {
+        await time(2000);
+        console.log(`${stocks.fruits[0]} was selected`);
+
+        await time(2000);
+        console.log(`the fruit has been chopped`);
+
+        await time(2000);
+        console.log(`${stocks.liquid[0]} and ${stocks.liquid[1]} was added`);
+    }
+    catch(error) {
+        console.log(error, 'customer left')
+    }
+    finally {
+        console.log('Day ended, shop is closed')
+    }
+}
+
+
+kitchen()
+
+
+/*
+* Using Promises
+*/
+
+// let order = (time: number, work: any): Promise<string> => {
+//     return new Promise((resolve, reject) => {
+//         if (isShopOpen) {
+//             setTimeout(() => {resolve(work())},time)
+//         } else {
+//             reject('Our shop is closed')
+//         }
+//     })
+// }
+
+// order(2000, () => console.log(`${stocks.fruits[0]} was selected`))
+// .then(() => {
+//     return order(2000, () => console.log(`the fruit has been chopped`))
+// })
+// .then(() => {
+//     return order(2000, () => console.log(`${stocks.liquid[0]} and ${stocks.liquid[1]} was added`))
+// })
+// .catch((err: Error) => console.log(`${err}`))
+// .finally(() => {
+//     console.log('Day ended, shop is closed')
+// })
+
+
+
+/*
+* Using Callbacks
+*/
+
+
+// let order = (fruitName: string, callbackProduction: any): void => {
+//     setTimeout(() => {
+//         console.log(`${fruitName} was selected`);
+//         callbackProduction();
+//     }, 2000)
+// }
+
+
+// let production = (): void => {
+//     setTimeout(() => {
+//         console.log('production has started');
+        
+//         setTimeout(()=>{
+//             console.log('the fruit has been chopped')
+//         }, 2000)
+//     }, 0)
+// }
+
+// order(stocks.fruits[0], production);
+
+
+
+/*
+Summary: 
+    Avoid callbacks nested more than 2 levels deep.
+
+    For promises, the basic structure is:
+    let order = () => {
+        return new Promise((resolve, reject) => {
+            if (some_cond) {
+                resolve(some_data)
+            } else {
+                reject(some_error)
+            }
+        })
+    }
+
+    order()
+    .then() // .then runs on successful resolution of async op in promise
+    .then()
+    .catch()  // runs on failure and rejection of async op in promise
+    .finally()  // runs anyway at the end 
+
+    For async away, anything await is blocking until it resolves or rejects
+*/
 
 
 
